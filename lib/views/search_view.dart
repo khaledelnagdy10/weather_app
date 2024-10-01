@@ -29,9 +29,8 @@ class SearchView extends StatelessWidget {
               onSubmitted: (value) {
                 nameCity = value;
                 BlocProvider.of<WeatherCubit>(context).getWeather(nameCity!);
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return WeatherView();
-                }));
+                BlocProvider.of<WeatherCubit>(context).cityName = nameCity!;
+                Navigator.pop(context);
                 log('$nameCity');
               },
             )),

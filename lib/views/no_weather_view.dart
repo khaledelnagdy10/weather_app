@@ -37,10 +37,9 @@ class NoWeatherView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is GetWeatherSucsses) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              BlocProvider.of<WeatherCubit>(context).weatherModel;
-              return WeatherView();
-            }));
+            return WeatherView(
+                weatherModel:
+                    BlocProvider.of<WeatherCubit>(context).weatherModel!);
           } else if (state is GetWeatherFaliure) {
             const Text('errrorrr');
           }

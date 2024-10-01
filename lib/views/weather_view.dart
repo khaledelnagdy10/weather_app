@@ -5,10 +5,11 @@ import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/views/search_view.dart';
 
 class WeatherView extends StatefulWidget {
-  WeatherView({
+  const WeatherView({
     super.key,
+    required this.weatherModel,
   });
-
+  final WeatherModel weatherModel;
   @override
   State<WeatherView> createState() => _WeatherViewState();
 }
@@ -20,63 +21,51 @@ class _WeatherViewState extends State<WeatherView> {
     super.initState();
   }
 
-  String? nameCity;
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    if (!mounted) {
+      super.setState(fn);
+    }
+  }
 
-  WeatherModel? weatherModel;
+  String? nameCity;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'Weather',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SearchView();
-                }));
-              },
-              icon: const Icon(Icons.search))
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('${widget.weatherModel.nameCity}'),
+          Text(DateTime.now().toString()),
+          Row(
+            children: [
+              Image.asset('assets/images/rainy.png'),
+              const Spacer(
+                flex: 1,
+              ),
+              Text(BlocProvider.of<WeatherCubit>(context).cityName),
+              const Spacer(
+                flex: 1,
+              ),
+              Column(
+                children: [
+                  Text('${widget.weatherModel.maxTemp}'),
+                  Text('${widget.weatherModel.minTemp}'),
+                ],
+              ),
+              const Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+          Text(
+            widget.weatherModel.weatherCondition,
+            style: TextStyle(color: Colors.black, fontSize: 29),
+          )
         ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${weatherModel?.nameCity}'),
-            Text(DateTime.now().toString()),
-            Row(
-              children: [
-                Image.asset('assets/images/rainy.png'),
-                const Spacer(
-                  flex: 1,
-                ),
-                Text(BlocProvider.of<WeatherCubit>(context).cityName!),
-                const Spacer(
-                  flex: 1,
-                ),
-                Column(
-                  children: [
-                    Text('${weatherModel?.maxTemp}'),
-                    Text('${weatherModel?.minTemp}'),
-                  ],
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-              ],
-            ),
-            Text(
-              'Rainy',
-              style: TextStyle(color: Colors.black, fontSize: 29),
-            )
-          ],
-        ),
       ),
     );
   }
